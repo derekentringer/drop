@@ -26,16 +26,11 @@ public class GameScreen implements Screen {
     private Sound mDropSound;
     private Music mDropMusic;
     private int mDropsGathered;
-
     private Array<Rectangle> mRainDrops;
     private long mLastDropTime;
-
     private OrthographicCamera mDropCamera;
-
     private Rectangle mRectangle;
-
     private Vector3 mTouchPosition;
-
 
 	public GameScreen (final Drop dropGame) {
         this.mDropGame = dropGame;
@@ -93,8 +88,7 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         mDropGame.mSpriteBatch.setProjectionMatrix(mDropCamera.combined);
 
-        // begin a new batch and draw the bucket and
-        // all drops
+        // begin a new batch and draw the bucket and all drops
         mDropGame.mSpriteBatch.begin();
         mDropGame.mBitmapFont.draw(mDropGame.mSpriteBatch, "Drops Collected: " + mDropsGathered, 0, 480);
         mDropGame.mSpriteBatch.draw(mBucketImage, mRectangle.x, mRectangle.y);
@@ -110,20 +104,25 @@ public class GameScreen implements Screen {
             mDropCamera.unproject(mTouchPosition);
             mRectangle.x = mTouchPosition.x - 64 / 2;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             mRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             mRectangle.x += 200 * Gdx.graphics.getDeltaTime();
+        }
 
         // make sure the bucket stays within the screen bounds
-        if (mRectangle.x < 0)
+        if (mRectangle.x < 0) {
             mRectangle.x = 0;
-        if (mRectangle.x > 800 - 64)
+        }
+        if (mRectangle.x > 800 - 64) {
             mRectangle.x = 800 - 64;
+        }
 
         // check if we need to create a new raindrop
-        if (TimeUtils.nanoTime() - mLastDropTime > 1000000000)
+        if (TimeUtils.nanoTime() - mLastDropTime > 1000000000) {
             spawnRainDrop();
+        }
 
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we increase the
@@ -132,8 +131,9 @@ public class GameScreen implements Screen {
         while (iter.hasNext()) {
             Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0)
+            if (raindrop.y + 64 < 0) {
                 iter.remove();
+            }
             if (raindrop.overlaps(mRectangle)) {
                 mDropsGathered++;
                 mDropSound.play();
