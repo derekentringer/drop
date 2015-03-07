@@ -2,6 +2,7 @@ package com.dentringer.drop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -66,5 +67,20 @@ public class Drop extends ApplicationAdapter {
             mDropCamera.unproject(mTouchPosition);
             mRectangle.x = (int)mTouchPosition.x - 64/2;
         }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            mRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            mRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
+        }
+
+        if(mRectangle.x > 0) {
+            mRectangle.x = 0;
+        }
+        if(mRectangle.x > 800 - 64) {
+            mRectangle.x = 800 - 64;
+        }
 	}
+
 }
