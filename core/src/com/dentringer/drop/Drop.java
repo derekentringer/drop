@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 import java.awt.Rectangle;
 
@@ -22,6 +23,8 @@ public class Drop extends ApplicationAdapter {
     private SpriteBatch mSpriteBatch;
 
     private Rectangle mRectangle;
+
+    private Vector3 mTouchPosition;
 	
 	@Override
 	public void create () {
@@ -56,5 +59,12 @@ public class Drop extends ApplicationAdapter {
         mSpriteBatch.begin();
         mSpriteBatch.draw(mBucketImage, mRectangle.x, mRectangle.y);
         mSpriteBatch.end();
+
+        if(Gdx.input.isTouched()) {
+            mTouchPosition = new Vector3();
+            mTouchPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            mDropCamera.unproject(mTouchPosition);
+            mRectangle.x = (int)mTouchPosition.x - 64/2;
+        }
 	}
 }
