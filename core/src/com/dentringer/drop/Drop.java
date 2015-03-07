@@ -38,6 +38,7 @@ public class Drop extends ApplicationAdapter {
 	public void create () {
         mDropImage = new Texture(Gdx.files.internal("droplet.png"));
         mBucketImage = new Texture(Gdx.files.internal("bucket.png"));
+        //TODO wav should be 16bit
         mDropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         mDropMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
 
@@ -107,7 +108,7 @@ public class Drop extends ApplicationAdapter {
                 iter.remove();
             }
             if(mRainDrop.overlaps(mRectangle)) {
-                mDropSound.play(100);
+                mDropSound.play();
                 iter.remove();
             }
         }
