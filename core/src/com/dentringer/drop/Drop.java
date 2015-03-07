@@ -124,4 +124,13 @@ public class Drop extends ApplicationAdapter {
         mLastDropTime = TimeUtils.nanoTime();
     }
 
+    @Override
+    public void dispose() {
+        mDropImage.dispose();
+        mBucketImage.dispose();
+        mDropSound.dispose();
+        mDropMusic.dispose();
+        mSpriteBatch.dispose();
+    }
+
 }
