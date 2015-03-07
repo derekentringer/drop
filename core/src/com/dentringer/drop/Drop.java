@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-
-import java.awt.Rectangle;
 
 public class Drop extends ApplicationAdapter {
 
@@ -72,10 +71,10 @@ public class Drop extends ApplicationAdapter {
             mRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            mRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
+            mRectangle.x += 200 * Gdx.graphics.getDeltaTime();
         }
 
-        if(mRectangle.x > 0) {
+        if(mRectangle.x < 0) {
             mRectangle.x = 0;
         }
         if(mRectangle.x > 800 - 64) {
