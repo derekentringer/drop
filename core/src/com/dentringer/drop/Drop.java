@@ -9,8 +9,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.Iterator;
 
 public class Drop extends ApplicationAdapter {
 
@@ -18,6 +23,9 @@ public class Drop extends ApplicationAdapter {
     private Texture mBucketImage;
     private Sound mDropSound;
     private Music mDropMusic;
+
+    private Array<Rectangle> mRainDrops;
+    private long mLastDropTime;
 
     private OrthographicCamera mDropCamera;
     private SpriteBatch mSpriteBatch;
@@ -46,6 +54,9 @@ public class Drop extends ApplicationAdapter {
         mRectangle.y = 20;
         mRectangle.width = 64;
         mRectangle.height = 64;
+
+        mRainDrops = new Array<Rectangle>();
+        spawnRainDrop();
 	}
 
 	@Override
@@ -58,6 +69,9 @@ public class Drop extends ApplicationAdapter {
         mSpriteBatch.setProjectionMatrix(mDropCamera.combined);
         mSpriteBatch.begin();
         mSpriteBatch.draw(mBucketImage, mRectangle.x, mRectangle.y);
+        for(Rectangle rainDrop:mRainDrops) {
+            mSpriteBatch.draw(mDropImage, rainDrop.x, rainDrop.y);
+        }
         mSpriteBatch.end();
 
         if(Gdx.input.isTouched()) {
@@ -80,6 +94,33 @@ public class Drop extends ApplicationAdapter {
         if(mRectangle.x > 800 - 64) {
             mRectangle.x = 800 - 64;
         }
+
+        if(TimeUtils.nanoTime() - mLastDropTime > 100000000) {
+            spawnRainDrop();
+        }
+
+        Iterator<Rectangle> iter = mRainDrops.iterator();
+        while(iter.hasNext()) {
+            Rectangle mRainDrop = iter.next();
+            mRainDrop.y -= 200 * Gdx.graphics.getDeltaTime();
+            if(mRainDrop.y + 64 < 0){
+                iter.remove();
+            }
+            if(mRainDrop.overlaps(mRectangle)) {
+                mDropSound.play(100);
+                iter.remove();
+            }
+        }
 	}
+
+    private void spawnRainDrop() {
+        Rectangle mRainDrop = new Rectangle();
+        mRainDrop.x = MathUtils.random(0, 800-64);
+        mRainDrop.y = 480;
+        mRainDrop.width = 64;
+        mRainDrop.height = 64;
+        mRainDrops.add(mRainDrop);
+        mLastDropTime = TimeUtils.nanoTime();
+    }
 
 }
